@@ -112,9 +112,9 @@ class MACAW(object):
                                    w_linear=args.wlinear).to(args.device)
 
         try:
-            print(self._adaptation_policy.seq[0]._linear.weight.mean())
+            #print(self._adaptation_policy.seq[0]._linear.weight.mean())
         except Exception as e:
-            print(self._adaptation_policy.seq[0].weight.mean())
+            #print(self._adaptation_policy.seq[0].weight.mean())
 
         print(f'Adaptation policy #params {torch.cat([p.view(-1) for p in self._adaptation_policy.parameters()]).shape[0]:,}')
         print(f'Value function #params {torch.cat([p.view(-1) for p in self._value_function.parameters()]).shape[0]:,}')

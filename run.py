@@ -9,7 +9,7 @@ import torch
 from collections import namedtuple
 import json
 
-from src.envs import HalfCheetahDirEnv, HalfCheetahVelEnv, AntDirEnv, AntGoalEnv, HumanoidDirEnv, WalkerRandParamsWrappedEnv, ML45Env
+from src.envs import HalfCheetahDirEnv, HalfCheetahVelEnv, AntDirEnv, WalkerRandParamsWrappedEnv, BanditEnv
 from src.macaw import MACAW
 from src.args import get_args
 
@@ -70,6 +70,8 @@ def run(args: argparse.Namespace, instance_idx: int = 0):
         env = HalfCheetahVelEnv(tasks, include_goal = args.include_goal or args.multitask, one_hot_goal=args.one_hot_goal or args.multitask)
     elif task_config.env == 'walker_params':
         env = WalkerRandParamsWrappedEnv(tasks, args.n_tasks, include_goal = args.include_goal or args.multitask)
+    elif task_config.env == 'bandit_dir':
+        env = BanditEnv(tasks, args.n_tasks)
     else:
         raise RuntimeError(f'Invalid env name {task_config.env}')
 

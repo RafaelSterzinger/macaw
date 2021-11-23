@@ -1,14 +1,25 @@
 {
-    "env": "ant_dir",
-    "total_tasks": 50,
-    "train_tasks": [0,1,2,3,4,5,7,8,9,10,
-		    11,12,13,14,15,16,18,
-		    19,20,21,22,24,25,26,
-		    27,28,29,31,32,33,34,
-		    35,36,37,38,39,40,42,
-		    43,44,45,46,47,48,49],
-    "test_tasks": [6,17,23,30,41],
-    "task_paths": "/run/media/rafael/HDD/ant/ant_dir/env_ant_dir_train_task{}.pkl",
-    "train_buffer_paths": "/run/media/rafael/HDD/ant/ant_dir/buffers_ant_dir_train_{}_sub_task_0.hdf5",
-    "test_buffer_paths": "/run/media/rafael/HDD/ant/ant_dir/buffers_ant_dir_train_{}_sub_task_0.hdf5"
+  "env": "bandit_dir",
+  "total_tasks": 15,
+  "train_tasks": [
+    0,
+    1,
+    3,
+    4,
+    5,
+    8,
+    9,
+    10,
+    11,
+    13,
+    14
+  ],
+  "test_tasks": [
+    2,
+    7,
+    12
+  ],
+  "task_paths": "/run/media/rafael/HDD/macaw/bandit_dir/env_bandits_train_task{}.pkl",
+  "train_buffer_paths": "/run/media/rafael/HDD/macaw/bandit_dir/buffers_bandits_train_{}.hdf5",
+  "test_buffer_paths": "/run/media/rafael/HDD/macaw/bandit_dir/buffers_bandits_train_{}.hdf5"
 }
