@@ -104,8 +104,6 @@ class WLinear(nn.Module):
         super().__init__()
 
         self.pa = paaa
-        if bias_size is None:
-            bias_size = out_features
 
         dim = 100
         self.z = nn.Parameter(torch.empty(dim).normal_(0, 1. / out_features))
@@ -121,7 +119,6 @@ class WLinear(nn.Module):
         return [self.z]
 
     def forward(self, x: torch.tensor):
-        #theta = self.fc(self.z + torch.empty_like(self.z).normal_(0, 1. / self.out_f))
         theta = self.fc(self.z)
         w = theta[:self.w_idx].view(x.shape[-1], -1)
         b = theta[self.w_idx:]
@@ -149,12 +146,11 @@ class WLinearMix(nn.Module):
         for m in self.m:
             theta = m(theta).relu()
         theta = self.out(theta).tanh()
-        theta = theta.view(-1, self.n_mix)# * self.scales.view(1,self.n_mix)
+        theta = theta.view(-1, self.n_mix)
         w = theta[:self.w_idx].view(self.n_mix, -1, x.shape[-1])
         b = theta[self.w_idx:].view(self.n_mix, 1, -1)
         stack = (w.unsqueeze(1) @ x.unsqueeze(0).unsqueeze(-1)).squeeze(-1) + b
-        #stack = torch.stack([x @ w[:,:,idx] + b[:,:,idx] for idx in range(self.n_mix)], -1)#torch.einsum('ij,klm->ilm', x,w) + b
-        
+
         return stack.mean(0)
 
 
@@ -208,7 +204,7 @@ class MLP(nn.Module):
             self.head_seq = nn.Sequential()
             extra_head_layers = [layer_widths[-2] + layer_widths[-1]] + extra_head_layers
 
-            for idx, (infc, outfc) in enumerate(zip(extra_head_layers[:-1], extra_head_layers[1:])):
+            for idx, (_, _) in enumerate(zip(extra_head_layers[:-1], extra_head_layers[1:])):
                 self.head_seq.add_module(f'relu_{idx}', nn.ReLU())
                 w = linear(extra_head_layers[idx], extra_head_layers[idx + 1])
                 self.aparams.extend(w.adaptation_parameters())
@@ -228,9 +224,3 @@ class MLP(nn.Module):
             return self._final_activation(self.post_seq(h)), self.head_seq(head_input)
         else:
             return self._final_activation(self.seq(x))
-        
-
-if __name__ == '__main__':
-    mlp = MLP([1,5,8,2])
-    x = torch.empty(10,1).normal_()
-    print(mlp(x).shape)

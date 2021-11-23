@@ -2,7 +2,6 @@ from typing import NamedTuple, List
 
 import h5py
 import numpy as np
-import tempfile
 import torch
 import torch.nn as nn
 import os
@@ -53,7 +52,6 @@ def argmax(module: nn.Module, arg: torch.tensor):
         if d < 1e-4:
             print('breaking')
             break
-    #print(f'Final d: {d}')
     return arg, out
 
 
@@ -185,8 +183,7 @@ class ReplayBuffer(object):
                         print(f"Attempted to load {stored} offline steps into buffer of size {self._size}.")
                         print(f"Loading only the **{mode}** {n_seed//skip} steps from offline buffer")
 
-                chunk_size = n_seed# + int(skip > 1)
-
+                chunk_size = n_seed
                 self._discount_factor = f['discount_factor'][()]
                 if mode == 'end':
                     h5slice = slice(-chunk_size, stored)
@@ -210,7 +207,6 @@ class ReplayBuffer(object):
             f.close()
 
         self._write_location = self._stored_steps % self._size
-        #self._valid = np.where(np.logical_and(~np.isnan(self._terminal_discounts[:,0]), self._terminal_discounts[:,0] < 0.35))[0]
 
     @property
     def obs_dim(self):
@@ -266,7 +262,6 @@ class ReplayBuffer(object):
             if self._stored_steps < self._size:
                 self._stored_steps += 1
 
-        #self._valid = np.where(np.logical_and(~np.isnan(self._terminal_discounts[:,0]), self._terminal_discounts[:,0] < 0.35))[0]
 
     def add_trajectories(self, trajectories: List[List[Experience]], force: bool = False):
         for trajectory in trajectories:
@@ -279,7 +274,6 @@ class ReplayBuffer(object):
             idxs = slice(idx, idx + batch_size)
         else:
             idxs = np.array(random.sample(range(self._stored_steps), batch_size))
-        #idxs = np.random.choice(self._valid, batch_size)
 
         obs = self._obs[idxs]
         actions = self._actions[idxs]
@@ -312,55 +306,3 @@ class ReplayBuffer(object):
             return batch
         else:
             return batch_dict
-
-
-def generate_test_trajectory(length: int, state_dim: int, action_dim: int):
-    trajectory = []
-    next_state = np.random.uniform(0,1,(state_dim,))
-    for idx in range(length):
-        state = next_state
-        action = np.random.uniform(-1,0,(action_dim,))
-        next_state = np.random.uniform(0,1,(state_dim,))
-        reward = np.random.uniform()
-        trajectory.append(Experience(state, action, next_state, reward, idx == length - 1))
-
-    return trajectory
-
-
-def test_old_buffer():
-    trajectory_length = 100
-    state, action = 6, 4
-    buf = ReplayBuffer(trajectory_length, state, action, max_trajectories=5)
-
-    for idx in range(2):
-        buf.add_trajectory(generate_test_trajectory(20, state, action))
-
-    buf.add_trajectories([generate_test_trajectory(10, state, action) for _ in range(2)])
-
-    print(len(buf))
-    print(buf.sample(2))
-    import pdb; pdb.set_trace()
-
-
-def test_new_buffer():
-    np.random.seed(0)
-    size = 100000000
-    state, action = 20, 6
-    buf = ReplayBuffer(size, state, action, stream_to_disk=True)
-
-    t1 = generate_test_trajectory(3, state, action)
-    buf.add_trajectory(t1)
-
-    t2 = [generate_test_trajectory(3, state, action) for _ in range(4)]
-    buf.add_trajectories(t2)
-
-    print(len(buf))
-    print('sample', buf.sample(20000).shape)
-
-    buf.save('test_buf.h5')
-    #buf2 = ReplayBuffer(size, state, action, load_from='test_buf.h5')
-    import pdb; pdb.set_trace()
-    
-
-if __name__ == '__main__':
-    test_new_buffer()

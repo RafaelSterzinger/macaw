@@ -30,14 +30,7 @@ Run offline meta-training with periodic online evaluations with any of the scrip
     
 Outputs (tensorboard logs) will be written to the `log/` directory.
     
-## Reach out!
-
-If you're having issues with the code or data, feel free to open an issue or send me an [email](mailto:eric.mitchell@cs.stanford.edu).
-
-
 ## Citation
-If our code or research was useful for your own work, you can cite us with the following attribution:
-    
     @InProceedings{mitchell2021offline,
         title = {Offline Meta-Reinforcement Learning with Advantage Weighting},
         author = {Mitchell, Eric and Rafailov, Rafael and Peng, Xue Bin and Levine, Sergey and Finn, Chelsea},

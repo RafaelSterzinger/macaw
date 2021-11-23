@@ -16,7 +16,7 @@
     "net_depth": 3,
     "net_width": 100,
     "no_bootstrap": true,
-    "instances": 4,
+    "instances": 1,
     "task_batch_size": 5,
     "maml_steps": 1,
     "eval_maml_steps": 1,

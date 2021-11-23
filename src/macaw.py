@@ -170,7 +170,7 @@ class MACAW(object):
         inner_buffers = [task_config.train_buffer_paths.format(idx) if load_inner_buffers else None for idx in task_config.train_tasks]
         outer_buffers = [task_config.train_buffer_paths.format(idx) if load_outer_buffers else None for idx in task_config.train_tasks]
         test_buffers = [task_config.test_buffer_paths.format(idx) if load_test_buffers else None for idx in task_config.test_tasks]
-        
+
         self._test_buffers = [ReplayBuffer(args.inner_buffer_size, self._observation_dim, env_action_dim(self._env),
                                               discount_factor=discount_factor,
                                               immutable=test_buffers[i] is not None, load_from=test_buffers[i], silent=silent, skip=args.inner_buffer_skip,
