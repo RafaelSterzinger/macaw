@@ -30,7 +30,7 @@ class BanditEnv(gym.Env):
             tasks = self.sample_tasks(n_tasks)
         self.tasks = tasks
         self.set_task_idx(0)
-        self._max_episode_steps = 200
+        self._max_episode_steps = 1000
         self.k = len(self._task['p_dist'])
         self.action_space = spaces.Discrete(self.k)
         self.observation_space = spaces.Box(low=1, high=1,
@@ -68,7 +68,7 @@ class BanditEnv(gym.Env):
         reward = self.np_random.binomial(1, mean)
         observation = np.ones(1, dtype=np.float32)
 
-        return observation, reward, True, {'task': self._task}
+        return observation, reward, False, {'task': self._task}
 
     def set_task_idx(self, idx):
         self.set_task(self.tasks[idx])
