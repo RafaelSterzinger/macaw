@@ -57,6 +57,7 @@ def run(args: argparse.Namespace, instance_idx: int = 0):
             tasks.append(task_info[0])
 
     seed = args.seed if args.seed is not None else instance_idx
+    print(f'Using seed {seed}')
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
