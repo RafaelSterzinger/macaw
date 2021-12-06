@@ -1,0 +1,25 @@
+{
+  "env": "bandit",
+  "total_tasks": 15,
+  "train_tasks": [
+    0,
+    1,
+    3,
+    4,
+    5,
+    8,
+    9,
+    10,
+    11,
+    13,
+    14
+  ],
+  "test_tasks": [
+    2,
+    7,
+    12
+  ],
+  "task_paths": "/run/media/rafael/HDD/macaw/bandit/env_bandits_train_task{}.pkl",
+  "train_buffer_paths": "/run/media/rafael/HDD/macaw/bandit/buffers_bandits_train_{}.hdf5",
+  "test_buffer_paths": "/run/media/rafael/HDD/macaw/bandit/buffers_bandits_train_{}.hdf5"
+}

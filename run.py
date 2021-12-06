@@ -9,37 +9,9 @@ import torch
 from collections import namedtuple
 import json
 
-from src.envs import HalfCheetahDirEnv, HalfCheetahVelEnv, AntDirEnv, WalkerRandParamsWrappedEnv, BanditEnv
+from src.envs import HalfCheetahDirEnv, AntDirEnv, BanditEnv
 from src.macaw import MACAW
 from src.args import get_args
-
-    
-
-def get_gym_env(env: str):
-    if env == 'ant':
-        env = gym.make('Ant-v2')
-    elif env == 'walker':
-        env = gym.make('Walker2d-v2')
-    elif env == 'humanoid':
-        env = gym.make('Humanoid-v2')
-    else:
-        raise NotImplementedError(f'Unknown env: {env}')
-        
-    env.tasks = [{}]
-
-    env.task_description_dim = lambda: 1
-    def set_task_idx(idx):
-        pass
-    env.set_task_idx = set_task_idx
-
-    def task_description(batch: None, one_hot: bool = True):
-        one_hot = np.zeros((1,))
-        if batch:
-            one_hot = one_hot[None,:].repeat(batch, 0)
-        return one_hot
-    env.task_description = task_description
-
-    return env
 
 
 def run(args: argparse.Namespace, instance_idx: int = 0):
@@ -48,7 +20,7 @@ def run(args: argparse.Namespace, instance_idx: int = 0):
 
     if args.advantage_head_coef == 0:
         args.advantage_head_coef = None
-        
+
     tasks = []
     for task_idx in (range(task_config.total_tasks if args.task_idx is None else [args.task_idx])):
         with open(task_config.task_paths.format(task_idx), 'rb') as f:
@@ -64,13 +36,9 @@ def run(args: argparse.Namespace, instance_idx: int = 0):
     torch.cuda.manual_seed(seed)
 
     if task_config.env == 'ant_dir':
-        env = AntDirEnv(tasks, args.n_tasks, include_goal = args.include_goal or args.multitask)
+        env = AntDirEnv(tasks, args.n_tasks, include_goal=args.include_goal or args.multitask)
     elif task_config.env == 'cheetah_dir':
-        env = HalfCheetahDirEnv(tasks, include_goal = args.include_goal or args.multitask)
-    elif task_config.env == 'cheetah_vel':
-        env = HalfCheetahVelEnv(tasks, include_goal = args.include_goal or args.multitask, one_hot_goal=args.one_hot_goal or args.multitask)
-    elif task_config.env == 'walker_params':
-        env = WalkerRandParamsWrappedEnv(tasks, args.n_tasks, include_goal = args.include_goal or args.multitask)
+        env = HalfCheetahDirEnv(tasks, include_goal=args.include_goal or args.multitask)
     elif task_config.env == 'bandit_dir':
         env = BanditEnv(tasks, args.n_tasks)
     else:
@@ -107,6 +75,7 @@ if __name__ == '__main__':
     if args.instances == 1:
         if args.profile:
             import cProfile
+
             cProfile.runctx('run(args)', sort='cumtime', locals=locals(), globals=globals())
         else:
             run(args)
