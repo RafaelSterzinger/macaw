@@ -56,7 +56,7 @@ def get_args() -> argparse.Namespace:
     parser.add_argument('--sample_exploration_inner', action='store_true')
     parser.add_argument('--cvae', action='store_true')
     parser.add_argument('--latent_dim', type=int, default=64)
-    parser.add_argument('--train_steps', type=int, default=1000000)
+    parser.add_argument('--train_steps', type=int, default=100000)
     parser.add_argument('--batch_size', type=int, default=256)
     parser.add_argument('--inner_batch_size', type=int, default=32)
     parser.add_argument('--eval_batch_size', type=int, default=32)
