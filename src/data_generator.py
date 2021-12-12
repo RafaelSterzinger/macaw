@@ -3,12 +3,11 @@ from multiprocessing import Process, set_start_method
 
 import gym
 import numpy as np
-from stable_baselines3 import PPO, SAC
+from gym.spaces import Discrete
+from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import BaseCallback
 from src.envs import BanditEnv, AntDirEnv
-import h5py as hdf
 import pickle as pkl
-from tqdm.auto import tqdm
 
 from src.macaw import env_action_dim
 from src.utils import Experience, ReplayBuffer
@@ -21,6 +20,7 @@ ENV_CONFIGS = {
         "n_steps_total": 1000000,
     }
 }
+
 
 def generate_data(env_name: str, num_tasks: int, start_index: int, type=int):
     if env_name == 'bandit':
@@ -74,7 +74,11 @@ class RolloutCallback(BaseCallback):
 
     def _on_step(self) -> bool:
         data = self.locals
-        action = data['actions']
+        if type(self.model.action_space) is Discrete:
+            action = np.zeros(10)
+            action[data['actions'][0]] = 1
+        else:
+            action = data['actions']
         state, action, next_state, reward, done = data['obs_tensor'].cpu().numpy(), action, data['new_obs'], \
                                                   data['rewards'], data['dones']
         self.trajectory.append(Experience(state, action, next_state, reward, done))
@@ -95,7 +99,7 @@ if __name__ == '__main__':
     parser.add_argument('--env', type=str, choices=['bandit', 'ant_dir'], required=True)
     parser.add_argument('--num_tasks', type=int, required=True)
     parser.add_argument('--start_index', type=int, required=True, default=0)
-    parser.add_argument('--instances', type=int, required=True, default=5)
+    parser.add_argument('--instances', type=int, required=False)
     parser.add_argument('--type', type=int, choices=range(1, 5), required=False)
     parser.add_argument('--mode', type=str, choices=['train', 'test'], required=False)
     args = parser.parse_args()
