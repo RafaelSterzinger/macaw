@@ -39,7 +39,7 @@ def run(args: argparse.Namespace, instance_idx: int = 0):
         env = AntDirEnv(tasks, args.n_tasks, include_goal=args.include_goal or args.multitask)
     elif task_config.env == 'cheetah_dir':
         env = HalfCheetahDirEnv(tasks, include_goal=args.include_goal or args.multitask)
-    elif task_config.env == 'bandit_dir':
+    elif task_config.env == 'bandit':
         env = BanditEnv(tasks, args.n_tasks)
     else:
         raise RuntimeError(f'Invalid env name {task_config.env}')
