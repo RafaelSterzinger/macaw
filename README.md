@@ -1,23 +1,29 @@
-## Installing the environment
+# On the Robustness of Context- and Gradient-based Meta-Reinforcement Learning Algorithms
 
-    # Install Python 3.7.9 if necessary
-    $ pyenv install 3.7.9
-    $ pyenv shell 3.7.9
-    
-    $ python --version
-    Python 3.7.9
-    
-    $ python -m venv env
-    $ source env/bin/activate
-    $ pip install -r requirements.txt
+For installing MuJoCo refer [here](https://github.com/openai/mujoco-py).
+
+
+## Setting the environment
+
+```bash
+virtualenv venv --python=python3.7
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+
 
 ## Downloading the data
 
-Will give polybox link
+We provide links for necessary data.
 
 The offline data used for MACAW can be found [here](https://drive.google.com/drive/folders/1kJEAYNWBYRD4ZIE3Ww0epXGM2VGelrQC?usp=sharing). Download it and use the default name (`macaw_offline_data`) for the folder where the four data directories are stored. [gDrive](https://github.com/prasmussen/gdrive) might be useful here if downloading from the Google Drive GUI is not an option.
 
-## Running MACAW 🦜
+We provide the [link](https://polybox.ethz.ch/index.php/s/orR8QC1lON12S5K) for the data necessary for evaluating how good MACAW performs in regard to out-of-distribution testing for 90°. 
+
+Due to the large size of data, other files are available upon request.
+
+## Reproduce MACAW results
 
 Run offline meta-training with periodic online evaluations with any of the scripts in `scripts/`. e.g.
     
@@ -32,6 +38,6 @@ Run offline meta-training with periodic online evaluations with any of the scrip
     python run.py --device cuda:0 --name macaw_ant --log_dir log/ant_3 --task_config config/ant_dir/50tasks_offline_3.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json
     python run.py --device cuda:0 --name macaw_ant --log_dir log/ant_4 --task_config config/ant_dir/50tasks_offline_4.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json
 
-    ...
     
 Outputs (tensorboard logs) will be written to the `log/` directory.
+
