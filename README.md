@@ -1,7 +1,3 @@
-# Offline Meta-Reinforcement Learning with Advantage Weighting (MACAW)
-
-MACAW code used for the experiments in the ICML 2021 paper.
-
 ## Installing the environment
 
     # Install Python 3.7.9 if necessary
@@ -17,23 +13,25 @@ MACAW code used for the experiments in the ICML 2021 paper.
 
 ## Downloading the data
 
+Will give polybox link
+
 The offline data used for MACAW can be found [here](https://drive.google.com/drive/folders/1kJEAYNWBYRD4ZIE3Ww0epXGM2VGelrQC?usp=sharing). Download it and use the default name (`macaw_offline_data`) for the folder where the four data directories are stored. [gDrive](https://github.com/prasmussen/gdrive) might be useful here if downloading from the Google Drive GUI is not an option.
 
 ## Running MACAW 🦜
 
 Run offline meta-training with periodic online evaluations with any of the scripts in `scripts/`. e.g.
     
-    $ . scripts/macaw_dir.sh # MACAW training on Cheetah-Direction (Figure 1)
-    $ . scripts/macaw_vel.sh # MACAW training on Cheetah-Velocity (Figure 1)
-    $ . scripts/macaw_quality_ablation.sh # Data quality ablation (Figure 5-left)
+    python run.py --device cuda:0 --name macaw_bandit --log_dir log/bandit3 --task_config config/bandit/3tasks_offline.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json 
+    python run.py --device cuda:0 --name macaw_bandit --log_dir log/bandit5 --task_config config/bandit/5tasks_offline.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json 
+    python run.py --device cuda:0 --name macaw_bandit --log_dir log/bandit10 --task_config config/bandit/10tasks_offline.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json 
+    python run.py --device cuda:0 --name macaw_bandit --log_dir log/bandit20 --task_config config/bandit/20tasks_offline.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json 
+    python run.py --device cuda:0 --name macaw_bandit --log_dir log/bandit35 --task_config config/bandit/35tasks_offline.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json 
+    
+    python run.py --device cuda:0 --name macaw_ant --log_dir log/ant_1 --task_config config/ant_dir/50tasks_offline_1.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json
+    python run.py --device cuda:0 --name macaw_ant --log_dir log/ant_2 --task_config config/ant_dir/50tasks_offline_2.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json
+    python run.py --device cuda:0 --name macaw_ant --log_dir log/ant_3 --task_config config/ant_dir/50tasks_offline_3.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json
+    python run.py --device cuda:0 --name macaw_ant --log_dir log/ant_4 --task_config config/ant_dir/50tasks_offline_4.json --macaw_params config/alg/standard.json --macaw_override_params config/alg/overrides/no_override.json
+
     ...
     
 Outputs (tensorboard logs) will be written to the `log/` directory.
-    
-## Citation
-    @InProceedings{mitchell2021offline,
-        title = {Offline Meta-Reinforcement Learning with Advantage Weighting},
-        author = {Mitchell, Eric and Rafailov, Rafael and Peng, Xue Bin and Levine, Sergey and Finn, Chelsea},
-        booktitle = {Proceedings of the 38th International Conference on Machine Learning},
-        year = {2021}
-    }
