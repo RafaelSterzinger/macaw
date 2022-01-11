@@ -15,11 +15,7 @@ pip install -r requirements.txt
 
 ## Downloading the data
 
-We provide links for necessary data.
-
-The offline data used for MACAW can be found [here](https://drive.google.com/drive/folders/1kJEAYNWBYRD4ZIE3Ww0epXGM2VGelrQC?usp=sharing). Download it and use the default name (`macaw_offline_data`) for the folder where the four data directories are stored. [gDrive](https://github.com/prasmussen/gdrive) might be useful here if downloading from the Google Drive GUI is not an option.
-
-We provide the [link](https://polybox.ethz.ch/index.php/s/orR8QC1lON12S5K) for the data necessary for evaluating how good MACAW performs in regard to out-of-distribution testing for 90°. 
+We provide the [link](https://polybox.ethz.ch/index.php/s/orR8QC1lON12S5K) for the data necessary for evaluating how good MACAW performs in regard to out-of-distribution testing for 90° and the Bernoulli-Bandit experiment. 
 
 Due to the large size of data, other files are available upon request.
 
